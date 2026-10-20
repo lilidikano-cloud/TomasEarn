@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TomasEarn - ayeT $0.005</title>
+<title>TomasEarn - ayeT $0.005 - Offerwall #30488</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,system-ui,sans-serif}
 body{background:#f5f6ff;min-height:100vh;padding-bottom:110px;color:#1a1a2e}
@@ -34,10 +34,10 @@ body{background:#f5f6ff;min-height:100vh;padding-bottom:110px;color:#1a1a2e}
     <div class="balance">BALANCE</div>
     <div class="balance-value" id="balance">$0.0000000</div>
     <div class="rate-box"><span>ayeT za video</span><b>$0.005</b></div>
-    <div class="rate-box"><span>ID: 4096893 / 25622</span><span>review</span></div>
+    <div class="rate-box"><span>ID: 4095893 / 30488</span><span>TomasEarn Wall</span></div>
   </div>
   <div class="card">
-    <button class="launch" onclick="launch()">LAUNCH</button>
+    <button class="launch" onclick="launch()">LAUNCH - OFFERWALL 30488</button>
     <div class="sub">BEZ LIMITU — KLIKAJ DONEKONEČNA</div>
   </div>
   <div class="card">
@@ -56,11 +56,6 @@ body{background:#f5f6ff;min-height:100vh;padding-bottom:110px;color:#1a1a2e}
     <div style="display:flex;gap:10px;margin-top:16px">
       <input class="input" style="margin-top:0" id="reflink" value="https://tomasearn.lilidikano.workers.dev/r/TOMAS" readonly>
       <button class="btn-copy" onclick="copyRef()">COPY</button>
-    </div>
-    <div class="stats" style="margin-top:18px">
-      <div><div class="stat-val" id="refcount">0</div><div class="stat-lab">POZVANÍ</div></div>
-      <div><div class="stat-val">50%</div><div class="stat-lab">L1</div></div>
-      <div><div class="stat-val">10%</div><div class="stat-lab">L2</div></div>
     </div>
   </div>
 </div>
@@ -85,11 +80,7 @@ body{background:#f5f6ff;min-height:100vh;padding-bottom:110px;color:#1a1a2e}
   <div class="card" style="text-align:center">
     <div class="logo">TE</div>
     <div style="font-weight:900;margin-top:14px;font-size:20px">TomasEarn</div>
-    <div style="font-size:13px;color:#6b708a">4096893 / 25622 — $0.005 / video</div>
-    <div style="margin-top:18px;text-align:left;background:#f8f9ff;border-radius:14px;padding:14px;font-size:11px;font-family:monospace;line-height:1.7">
-      PUBLISHER_ID = 4096893<br>PLACEMENT_ID = 25622<br>RATE = $0.005<br>STATUS = review<br>DOMAIN = tomasearn.lilidikano.workers.dev
-    </div>
-    <button class="btn-sec" onclick="installPWA()">Pridať na plochu — ikonka TE</button>
+    <div style="font-size:13px;color:#6b708a">4095893 / 30488 — TomasEarn Wall</div>
   </div>
 </div>
 <div class="nav">
@@ -106,13 +97,17 @@ let withd=parseFloat(localStorage.getItem('te_with')||'0');
 document.getElementById('usdt').value=localStorage.getItem('te_usdt')||'';
 document.getElementById('btc').value=localStorage.getItem('te_btc')||'';
 upd();
-function upd(){balance.textContent='$'+bal.toFixed(7);document.getElementById('bal2').textContent='$'+bal.toFixed(7);videos.textContent=vids;withdrawn.textContent='$'+withd.toFixed(2);}
-function launch(){const uid=localStorage.getItem('te_uid')||'user_'+Math.random().toString(36).slice(2,8);localStorage.setItem('te_uid',uid);window.open('https://www.ayetstudios.com/offers/offerwall/20488?external_identifier='+uid,'_blank');bal+=RATE;vids++;localStorage.setItem('te_bal',bal);localStorage.setItem('te_vids',vids);upd();}
+function upd(){document.getElementById('balance').textContent='$'+bal.toFixed(7);document.getElementById('bal2').textContent='$'+bal.toFixed(7);document.getElementById('videos').textContent=vids;document.getElementById('withdrawn').textContent='$'+withd.toFixed(2);}
+function launch(){
+  const uid=localStorage.getItem('te_uid')||'user_'+Math.random().toString(36).slice(2,8);
+  localStorage.setItem('te_uid',uid);
+  window.open('https://www.ayetstudios.com/offers/offerwall/30488?external_identifier='+uid,'_blank');
+  bal+=RATE;vids++;localStorage.setItem('te_bal',bal);localStorage.setItem('te_vids',vids);upd();
+}
 function copyRef(){navigator.clipboard.writeText(document.getElementById('reflink').value);alert('Link skopírovaný!');}
 function saveAddr(){localStorage.setItem('te_usdt',document.getElementById('usdt').value);localStorage.setItem('te_btc',document.getElementById('btc').value);document.getElementById('paymsg').textContent='✓ Adresy uložené!';}
 function withdraw(){if(bal<0.05){alert('Minimum $0.05 — klikaj LAUNCH 10x!');return;}const u=document.getElementById('usdt').value,b=document.getElementById('btc').value;if(!u&&!b){alert('Zadaj adresu!');return;}withd+=bal;localStorage.setItem('te_with',withd);document.getElementById('paymsg').textContent='✓ $'+bal.toFixed(3)+' odoslané na '+(u||b);bal=0;localStorage.setItem('te_bal',bal);upd();}
 function switchTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
-function installPWA(){alert('Chrome: Menu ⋮ > Pridať na plochu');}
 </script>
 </body>
 </html>
