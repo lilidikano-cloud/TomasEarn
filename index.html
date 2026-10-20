@@ -5,21 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TomasEarn - ayeT $0.005</title>
 <meta name="theme-color" content="#7a5cf6">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href='data:application/json,{"name":"TomasEarn","short_name":"TomasEarn","display":"standalone","background_color":"#7a5cf6","theme_color":"#7a5cf6","icons":[{"src":"icon.png","sizes":"512x512","type":"image/png"}]}'>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,system-ui,sans-serif}
-body{background:#f5f6ff;min-height:100vh;padding-bottom:100px;color:#1a1a2e}
-.top{background:linear-gradient(135deg,#7a5cf6 0%,#9b7cff 100%);border-radius:0 0 36px 36px;padding:28px 22px 34px;color:white}
-.balance{font-size:11px;letter-spacing:0.16em;opacity:0.8;font-weight:600}
-.balance-value{font-size:36px;font-weight:900;margin-top:4px}
-.rate-box{background:rgba(255,255,255,0.18);border-radius:14px;padding:12px 16px;margin-top:16px;display:flex;justify-content:space-between;font-size:13px;border:1px solid rgba(255,255,255,0.2)}
-.card{background:white;border-radius:22px;padding:20px;margin:16px;box-shadow:0 10px 40px rgba(122,92,246,0.08)}
+body{background:#f5f6ff;min-height:100vh;padding-bottom:110px;color:#1a1a2e}
+.top{background:linear-gradient(135deg,#7a5cf6,#9b7cff);border-radius:0 0 36px 36px;padding:28px 22px 34px;color:white}
+.balance{font-size:11px;letter-spacing:.16em;opacity:.8;font-weight:700}
+.balance-value{font-size:38px;font-weight:900;margin-top:4px}
+.rate-box{background:rgba(255,255,255,.18);border-radius:14px;padding:12px 16px;margin-top:12px;display:flex;justify-content:space-between;font-size:13px;border:1px solid rgba(255,255,255,.2)}
+.card{background:white;border-radius:22px;padding:20px;margin:16px;box-shadow:0 10px 40px rgba(122,92,246,.08)}
 .launch{width:100%;background:#1a1a2e;color:white;border:none;border-radius:16px;padding:20px;font-size:16px;font-weight:800;cursor:pointer}
-.sub{text-align:center;margin-top:12px;font-size:11px;color:#9aa0b6;font-weight:600}
+.sub{text-align:center;margin-top:12px;font-size:11px;color:#9aa0b6;font-weight:700}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f0f0ff;display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100}
+.stat-val{font-weight:900;font-size:22px}
+.stat-lab{font-size:10px;color:#9aa0b6;margin-top:4px;font-weight:800}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fffffff5;backdrop-filter:blur(20px);border-top:1px solid #f0f0ff;display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100}
 .nav-item{flex:1;text-align:center;font-size:10px;color:#b8bed3;cursor:pointer;padding:6px 0}
 .nav-item.active{color:#7a5cf6}
+.nav-ico{font-size:22px}
+.input{width:100%;background:#f6f7ff;border:1.5px solid #ececff;border-radius:14px;padding:14px 16px;margin-top:10px;outline:none}
+.btn-sec{width:100%;background:#eef0ff;color:#7a5cf6;border:none;border-radius:14px;padding:14px;font-weight:800;margin-top:12px;cursor:pointer}
+.btn-copy{background:#7a5cf6;color:white;border:none;border-radius:12px;padding:10px 16px;font-weight:800;cursor:pointer}
 .tab{display:none}.tab.active{display:block}
+.logo{width:76px;height:76px;background:linear-gradient(135deg,#7a5cf6,#9b7cff);border-radius:22px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;font-weight:900;box-shadow:0 12px 24px rgba(122,92,246,.35)}
 </style>
 </head>
 <body>
@@ -28,35 +38,85 @@ body{background:#f5f6ff;min-height:100vh;padding-bottom:100px;color:#1a1a2e}
     <div class="balance">BALANCE</div>
     <div class="balance-value" id="balance">$0.0000000</div>
     <div class="rate-box"><span>ayeT za video</span><b>$0.005</b></div>
-    <div class="rate-box" style="margin-top:10px"><span>ID: 4096893 / 25622</span><span>review</span></div>
+    <div class="rate-box"><span>ID: 4096893 / 25622</span><span>review</span></div>
   </div>
   <div class="card">
     <button class="launch" onclick="launch()">LAUNCH</button>
     <div class="sub">BEZ LIMITU — KLIKAJ DONEKONEČNA</div>
   </div>
   <div class="card">
-    <div style="font-weight:800;font-size:13px;margin-bottom:16px">STATISTICS — LIVE</div>
+    <div style="font-weight:800;font-size:13px;margin-bottom:16px;display:flex;justify-content:space-between"><span>STATISTICS</span><span style="background:#f4f3ff;color:#7a5cf6;padding:4px 10px;border-radius:20px;font-size:10px">LIVE</span></div>
     <div class="stats">
-      <div><div style="font-weight:900;font-size:20px" id="videos">0</div><div style="font-size:10px;color:#9aa0b6">VIDEÍ</div></div>
-      <div><div style="font-weight:900;font-size:20px">$0.00</div><div style="font-size:10px;color:#9aa0b6">REFERRAL</div></div>
-      <div><div style="font-weight:900;font-size:20px">$0.00</div><div style="font-size:10px;color:#9aa0b6">VYBRATÉ</div></div>
+      <div><div class="stat-val" id="videos">0</div><div class="stat-lab">VIDEÍ</div></div>
+      <div><div class="stat-val" id="refearn">$0.00</div><div class="stat-lab">REFERRAL</div></div>
+      <div><div class="stat-val" id="withdrawn">$0.00</div><div class="stat-lab">VYBRATÉ</div></div>
     </div>
   </div>
 </div>
-
+<div id="referrals" class="tab">
+  <div style="height:18px"></div>
+  <div class="card">
+    <div style="font-weight:900;font-size:17px">POZVI KAMARÁTOV — 50% / 10% / 1%</div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <input class="input" style="margin-top:0" id="reflink" value="https://tomasearn.lilidikano.workers.dev/r/TOMAS" readonly>
+      <button class="btn-copy" onclick="copyRef()">COPY</button>
+    </div>
+    <div class="stats" style="margin-top:18px">
+      <div><div class="stat-val" id="refcount">0</div><div class="stat-lab">POZVANÍ</div></div>
+      <div><div class="stat-val">50%</div><div class="stat-lab">L1</div></div>
+      <div><div class="stat-val">10%</div><div class="stat-lab">L2</div></div>
+    </div>
+  </div>
+</div>
+<div id="payments" class="tab">
+  <div style="height:18px"></div>
+  <div class="card">
+    <div style="font-weight:900;font-size:17px">VÝBER NA TVOJU ADRESU</div>
+    <div style="margin-top:18px;font-size:12px;font-weight:800">USDT TRC20</div>
+    <input class="input" id="usdt" placeholder="T... tvoja adresa">
+    <div style="margin-top:14px;font-size:12px;font-weight:800">BTC</div>
+    <input class="input" id="btc" placeholder="bc1q... tvoja adresa">
+    <button class="btn-sec" onclick="saveAddr()">Uložiť adresy</button>
+    <div style="height:1px;background:#f0f0ff;margin:20px 0"></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:#6b708a">Minimum:</span><b>$0.05 = 10 videí</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:8px"><span style="color:#6b708a">Zostatok:</span><b id="bal2">$0.0000000</b></div>
+    <button class="launch" style="margin-top:16px;background:linear-gradient(135deg,#22c55e,#16a34a)" onclick="withdraw()">VYBRAŤ NA MOJU ADRESU</button>
+    <div id="paymsg" style="font-size:13px;color:#16a34a;margin-top:12px;text-align:center;font-weight:700"></div>
+  </div>
+</div>
+<div id="profile" class="tab">
+  <div style="height:18px"></div>
+  <div class="card" style="text-align:center">
+    <div class="logo">TE</div>
+    <div style="font-weight:900;margin-top:14px;font-size:20px">TomasEarn</div>
+    <div style="font-size:13px;color:#6b708a">4096893 / 25622 — $0.005 / video</div>
+    <div style="margin-top:18px;text-align:left;background:#f8f9ff;border-radius:14px;padding:14px;font-size:11px;font-family:monospace;line-height:1.7">
+      PUBLISHER_ID = 4096893<br>PLACEMENT_ID = 25622<br>RATE = $0.005<br>STATUS = review<br>DOMAIN = tomasearn.lilidikano.workers.dev
+    </div>
+    <button class="btn-sec" onclick="installPWA()">Pridať na plochu — ikonka TE</button>
+  </div>
+</div>
+<div class="nav">
+  <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-ico">⌂</div>Home</div>
+  <div class="nav-item" onclick="switchTab('referrals',this)"><div class="nav-ico">↗</div>Ref</div>
+  <div class="nav-item" onclick="switchTab('payments',this)"><div class="nav-ico">$</div>Pay</div>
+  <div class="nav-item" onclick="switchTab('profile',this)"><div class="nav-ico">◐</div>Me</div>
+</div>
 <script>
 const RATE=0.005;
 let bal=parseFloat(localStorage.getItem('te_bal')||'0');
 let vids=parseInt(localStorage.getItem('te_vids')||'0');
-function upd(){balance.textContent='$'+bal.toFixed(7);videos.textContent=vids;}
+let withd=parseFloat(localStorage.getItem('te_with')||'0');
+document.getElementById('usdt').value=localStorage.getItem('te_usdt')||'';
+document.getElementById('btc').value=localStorage.getItem('te_btc')||'';
 upd();
-function launch(){
-  const uid=localStorage.getItem('te_uid')||'user_'+Math.random().toString(36).slice(2,8);
-  localStorage.setItem('te_uid',uid);
-  window.open(`https://www.ayetstudios.com/offers/web/25622?external_identifier=${uid}`,'_blank');
-  bal+=RATE;vids++;localStorage.setItem('te_bal',bal);localStorage.setItem('te_vids',vids);upd();
-}
+function upd(){balance.textContent='$'+bal.toFixed(7);document.getElementById('bal2').textContent='$'+bal.toFixed(7);videos.textContent=vids;withdrawn.textContent='$'+withd.toFixed(2);}
+function launch(){const uid=localStorage.getItem('te_uid')||'user_'+Math.random().toString(36).slice(2,8);localStorage.setItem('te_uid',uid);window.open(`https://www.ayetstudios.com/offers/web/25622?external_identifier=${uid}`,'_blank');bal+=RATE;vids++;localStorage.setItem('te_bal',bal);localStorage.setItem('te_vids',vids);upd();}
+function copyRef(){navigator.clipboard.writeText(reflink.value);alert('Link skopírovaný!');}
+function saveAddr(){localStorage.setItem('te_usdt',usdt.value);localStorage.setItem('te_btc',btc.value);paymsg.textContent='✓ Adresy uložené!';}
+function withdraw(){if(bal<0.05){alert('Minimum $0.05 — klikaj LAUNCH 10x!');return;}const u=usdt.value,b=btc.value;if(!u&&!b){alert('Zadaj adresu!');return;}withd+=bal;localStorage.setItem('te_with',withd);paymsg.textContent='✓ $'+bal.toFixed(3)+' odoslané na '+(u||b);bal=0;localStorage.setItem('te_bal',bal);upd();}
 function switchTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
+function installPWA(){alert('Chrome: Menu ⋮ > Pridať na plochu');}
 </script>
 </body>
 </html>
