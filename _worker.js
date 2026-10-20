@@ -1,30 +1,17 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
-
-    // 1. CALLBACK - hlavné pre ayeT
-    if (url.pathname === '/callback' || url.pathname.startsWith('/callback?')) {
-      const uid = url.searchParams.get('external_identifier') || 'unknown';
-      const amount = url.searchParams.get('amount') || '0.005';
-      return new Response(`OK - ${amount} for ${uid}`, {
-        status: 200,
-        headers: { 'Content-Type': 'text/plain' }
-      });
+    
+    if (url.pathname === '/videos') {
+      const userId = url.searchParams.get('user_id') || 'guest';
+      return new Response(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Videá</title>
+<style>body{margin:0;background:#111;color:white;font-family:Arial;text-align:center}.header{padding:15px;background:#222;font-size:20px}iframe{width:100%;height:calc(100vh - 60px);border:none;background:white}</style>
+</head><body><div class="header">🎬 TomasEarn - Videá</div>
+<iframe src="https://offerwall.ayet.io/offers?adSlot=30488&externalIdentifier=${userId}" allow="autoplay"></iframe>
+</body></html>`, {headers:{'Content-Type':'text/html'}});
     }
-
-    // 2. ADS.TXT - pre schválenie
-    if (url.pathname === '/ads.txt') {
-      return new Response(`ayetstudios.com, 4095893, DIRECT
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0`, {
-        status: 200,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-    }
-
-    // 3. INDEX - tvoja stránka
-    return new Response(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>TomasEarn</title></head><body><h1>TomasEarn is running</h1><p>ads.txt OK<br>callback OK</p><p>Place this in ayeT: https://tomasearn.lilidikano.workers.dev</p></body></html>`, {
-      status: 200,
-      headers: { 'Content-Type': 'text/html' }
-    });
+    
+    return new Response(`<h1>TomasEarn</h1><p><a href="/videos?user_id=test123">VIDEÁ - KLIKNI</a></p>`, {headers:{'Content-Type':'text/html'}});
   }
 }
