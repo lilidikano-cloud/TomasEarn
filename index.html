@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TomasEarn - ayeT $0.005 / video</title>
+<meta name="theme-color" content="#7a5cf6">
+<link rel="manifest" href="data:application/json,{}">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+body{background:#f8f9ff;min-height:100vh;padding-bottom:90px}
+.top{background:#7a5cf6;border-radius:0 0 32px 32px;padding:24px 20px 28px;color:white}
+.balance{font-size:11px;letter-spacing:0.14em;opacity:0.7;margin-bottom:6px}
+.balance-value{font-size:32px;font-weight:800;letter-spacing:-0.02em}
+.ayet-rate{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 14px;margin-top:14px;font-size:13px;display:flex;justify-content:space-between}
+.card{background:white;border-radius:20px;padding:18px;margin:16px;box-shadow:0 8px 30px rgba(122,92,246,0.08)}
+.launch{width:100%;background:#1a1a2e;color:white;border:none;border-radius:16px;padding:18px;font-size:16px;font-weight:700;letter-spacing:0.02em;cursor:pointer}
+.launch:active{transform:scale(0.98)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.stat-val{font-weight:800;font-size:18px;color:#1a1a2e}
+.stat-lab{font-size:10px;color:#9aa0b6;letter-spacing:0.08em;margin-top:2px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #f0f0ff;display:flex;padding:10px 0 calc(10px + env(safe-area-inset-bottom));z-index:50}
+.nav-item{flex:1;text-align:center;font-size:10px;color:#b8bed3;cursor:pointer}
+.nav-item.active{color:#7a5cf6}
+.nav-ico{font-size:20px;margin-bottom:2px}
+.input{width:100%;background:#f1f2f8;border:1px solid #ececff;border-radius:12px;padding:12px 14px;margin-top:8px;outline:none}
+.input:focus{border-color:#7a5cf6;background:white}
+.btn-secondary{width:100%;background:#eef2ff;color:#7a5cf6;border:none;border-radius:12px;padding:12px;font-weight:600;margin-top:10px;cursor:pointer}
+.btn-copy{background:#7a5cf6;color:white;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.tab{display:none}.tab.active{display:block}
+.badge{background:#f3f0ff;color:#7a5cf6;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+</style>
+</head>
+<body>
+<div id="home" class="tab active">
+  <div class="top">
+    <div class="balance">BALANCE</div>
+    <div class="balance-value" id="balance">$0.0000000</div>
+    <div class="ayet-rate">
+      <span>ayeT platí za video:</span>
+      <span id="rate" style="font-weight:800">$0.005</span>
+    </div>
+  </div>
+  <div class="card">
+    <button class="launch" onclick="launch()">LAUNCH</button>
+    <div style="text-align:center;margin-top:10px;font-size:11px;color:#9aa0b6">BEZ LIMITU - KLIKAJ DONEKONEČNA</div>
+  </div>
+  <div class="card">
+    <div style="font-weight:700;font-size:14px;margin-bottom:14px">STATISTICS</div>
+    <div class="stats">
+      <div><div class="stat-val" id="videos">0</div><div class="stat-lab">VIDEÍ</div></div>
+      <div><div class="stat-val" id="refearn">$0.00</div><div class="stat-lab">REFERRAL</div></div>
+      <div><div class="stat-val" id="withdrawn">$0.00</div><div class="stat-lab">VYBRATÉ</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="referrals" class="tab">
+  <div class="card" style="margin-top:24px">
+    <div style="font-weight:700">POZVI KAMARÁTOV</div>
+    <div style="font-size:12px;color:#9aa0b6;margin:8px 0">Získaj 50% / 10% / 1%</div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input class="input" style="margin-top:0" id="reflink" value="https://tomasearn.pages.dev/r/TMS123" readonly>
+      <button class="btn-copy" onclick="copyRef()">KOPÍROVAŤ</button>
+    </div>
+    <div class="stats" style="margin-top:16px"><div><div class="stat-val" id="refcount">0</div><div class="stat-lab">POZVANÍ</div></div></div>
+  </div>
+</div>
+
+<div id="payments" class="tab">
+  <div class="card" style="margin-top:24px">
+    <div style="font-weight:700">VÝBER NA MOJU ADRESU</div>
+    <div style="margin-top:14px;font-size:12px;font-weight:600">USDT TRC20</div>
+    <input class="input" id="usdt" placeholder="T... tvoja USDT adresa">
+    <div style="margin-top:10px;font-size:12px;font-weight:600">BTC</div>
+    <input class="input" id="btc" placeholder="bc1q... tvoja BTC adresa">
+    <button class="btn-secondary" onclick="saveAddr()">Uložiť adresy</button>
+    <div style="height:1px;background:#f0f0ff;margin:16px 0"></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>Minimum:</span><b>$0.05</b></div>
+    <button class="launch" style="margin-top:12px;background:#22c55e" onclick="withdraw()">VYBRAŤ NA MOJU ADRESU</button>
+    <div id="paymsg" style="font-size:12px;color:#22c55e;margin-top:8px;text-align:center"></div>
+  </div>
+</div>
+
+<div id="profile" class="tab">
+  <div class="card" style="margin-top:24px;text-align:center">
+    <div style="width:72px;height:72px;background:#7a5cf6;border-radius:20px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:white;font-size:28px;font-weight:800">TE</div>
+    <div style="font-weight:800;margin-top:12px">TomasEarn</div>
+    <div style="font-size:12px;color:#9aa0b6">ayeT $0.005 / video</div>
+    <button class="btn-secondary" onclick="installPWA()">Pridať na plochu - ikonka</button>
+    <div style="margin-top:20px;text-align:left;background:#f8f9ff;border-radius:12px;padding:12px;font-size:11px;font-family:monospace">
+      AYET_PUBLISHER_ID = "<span id="pubid" style="color:#7a5cf6">TU VLOŽ</span>"<br>
+      AYET_APP_ID = "<span id="appid" style="color:#7a5cf6">TU VLOŽ</span>"<br>
+      RATE = $0.005
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-ico">⌂</div>Home</div>
+  <div class="nav-item" onclick="switchTab('referrals',this)"><div class="nav-ico">↗</div>Referrals</div>
+  <div class="nav-item" onclick="switchTab('payments',this)"><div class="nav-ico">$</div>Payments</div>
+  <div class="nav-item" onclick="switchTab('profile',this)"><div class="nav-ico">◐</div>Profile</div>
+</div>
+
+<script>
+// === AYET NASTAVENIE - TU VLOŽ SVOJE ID ===
+const AYET_PUBLISHER_ID = "TU_VLOZ_PUBLISHER_ID";
+const AYET_APP_ID = "TU_VLOZ_APP_ID";
+const AYET_RATE = 0.005; // kolko plati za video
+
+let balance = parseFloat(localStorage.getItem('te_balance')||'0');
+let videos = parseInt(localStorage.getItem('te_videos')||'0');
+let usdt = localStorage.getItem('te_usdt')||'';
+let btc = localStorage.getItem('te_btc')||'';
+document.getElementById('usdt').value = usdt;
+document.getElementById('btc').value = btc;
+updateUI();
+
+function updateUI(){
+  document.getElementById('balance').textContent = '$'+balance.toFixed(7);
+  document.getElementById('videos').textContent = videos;
+}
+
+function launch(){
+  // === AYET EARN - REALNE PENIAZE ===
+  ayetEarn();
+  balance += AYET_RATE;
+  videos++;
+  localStorage.setItem('te_balance', balance);
+  localStorage.setItem('te_videos', videos);
+  updateUI();
+  if(navigator.vibrate) navigator.vibrate(20);
+}
+
+async function ayetEarn(){
+  // TODO: Napoj na realne ayeT API ked mas ID
+  // Priklad:
+  // await fetch(`https://api.ayet-studios.com/earn?pub=${AYET_PUBLISHER_ID}&app=${AYET_APP_ID}&user=${userId}`)
+  console.log("ayeT earn", AYET_PUBLISHER_ID, AYET_APP_ID);
+}
+
+function copyRef(){
+  navigator.clipboard.writeText(document.getElementById('reflink').value);
+  alert('Skopírované!');
+}
+function saveAddr(){
+  localStorage.setItem('te_usdt', document.getElementById('usdt').value);
+  localStorage.setItem('te_btc', document.getElementById('btc').value);
+  document.getElementById('paymsg').textContent = 'Adresy uložené!';
+}
+function withdraw(){
+  if(balance < 0.05){ alert('Minimum $0.05 - klikaj LAUNCH'); return; }
+  const u = document.getElementById('usdt').value;
+  const b = document.getElementById('btc').value;
+  if(!u && !b){ alert('Zadaj USDT alebo BTC adresu'); return; }
+  // === AYET WITHDRAW ===
+  document.getElementById('paymsg').textContent = 'Požiadavka odoslaná na ' + (u||b) + ' - spracuje ayeT';
+  // balance = 0; localStorage.setItem('te_balance',0); updateUI(); // odkomentuj po napojeni
+}
+function switchTab(id, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+function installPWA(){ alert('Na mobile: Menu (3 bodky) > Pridať na plochu / Inštalovať aplikáciu'); }
+</script>
+</body>
+</html>
