@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TomasEarn - ayeT $0.005 / video</title>
+<title>TomasEarn - ayeT $0.005</title>
 <meta name="theme-color" content="#7a5cf6">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
-body{background:#f8f9ff;min-height:100vh;padding-bottom:90px}
-.top{background:#7a5cf6;border-radius:0 0 32px 32px;padding:24px 20px 28px;color:white}
-.balance{font-size:11px;letter-spacing:0.14em;opacity:0.7;margin-bottom:6px}
-.balance-value{font-size:32px;font-weight:800}
-.card{background:white;border-radius:20px;padding:18px;margin:16px;box-shadow:0 8px 30px rgba(122,92,246,0.08)}
-.launch{width:100%;background:#1a1a2e;color:white;border:none;border-radius:16px;padding:18px;font-size:16px;font-weight:700;cursor:pointer}
-.nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #f0f0ff;display:flex;padding:10px 0;z-index:50}
-.nav-item{flex:1;text-align:center;font-size:10px;color:#b8bed3;cursor:pointer}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,system-ui,sans-serif}
+body{background:#f5f6ff;min-height:100vh;padding-bottom:100px;color:#1a1a2e}
+.top{background:linear-gradient(135deg,#7a5cf6 0%,#9b7cff 100%);border-radius:0 0 36px 36px;padding:28px 22px 34px;color:white}
+.balance{font-size:11px;letter-spacing:0.16em;opacity:0.8;font-weight:600}
+.balance-value{font-size:36px;font-weight:900;margin-top:4px}
+.rate-box{background:rgba(255,255,255,0.18);border-radius:14px;padding:12px 16px;margin-top:16px;display:flex;justify-content:space-between;font-size:13px;border:1px solid rgba(255,255,255,0.2)}
+.card{background:white;border-radius:22px;padding:20px;margin:16px;box-shadow:0 10px 40px rgba(122,92,246,0.08)}
+.launch{width:100%;background:#1a1a2e;color:white;border:none;border-radius:16px;padding:20px;font-size:16px;font-weight:800;cursor:pointer}
+.sub{text-align:center;margin-top:12px;font-size:11px;color:#9aa0b6;font-weight:600}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f0f0ff;display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100}
+.nav-item{flex:1;text-align:center;font-size:10px;color:#b8bed3;cursor:pointer;padding:6px 0}
 .nav-item.active{color:#7a5cf6}
-.input{width:100%;background:#f1f2f8;border:1px solid #ececff;border-radius:12px;padding:12px 14px;margin-top:8px}
 .tab{display:none}.tab.active{display:block}
 </style>
 </head>
@@ -25,33 +27,36 @@ body{background:#f8f9ff;min-height:100vh;padding-bottom:90px}
   <div class="top">
     <div class="balance">BALANCE</div>
     <div class="balance-value" id="balance">$0.0000000</div>
+    <div class="rate-box"><span>ayeT za video</span><b>$0.005</b></div>
+    <div class="rate-box" style="margin-top:10px"><span>ID: 4096893 / 25622</span><span>review</span></div>
   </div>
   <div class="card">
     <button class="launch" onclick="launch()">LAUNCH</button>
-    <div style="text-align:center;margin-top:10px;font-size:11px;color:#9aa0b6">BEZ LIMITU - ID: 4096893 / 25622</div>
+    <div class="sub">BEZ LIMITU — KLIKAJ DONEKONEČNA</div>
+  </div>
+  <div class="card">
+    <div style="font-weight:800;font-size:13px;margin-bottom:16px">STATISTICS — LIVE</div>
+    <div class="stats">
+      <div><div style="font-weight:900;font-size:20px" id="videos">0</div><div style="font-size:10px;color:#9aa0b6">VIDEÍ</div></div>
+      <div><div style="font-weight:900;font-size:20px">$0.00</div><div style="font-size:10px;color:#9aa0b6">REFERRAL</div></div>
+      <div><div style="font-weight:900;font-size:20px">$0.00</div><div style="font-size:10px;color:#9aa0b6">VYBRATÉ</div></div>
+    </div>
   </div>
 </div>
+
 <script>
-const AYET_PUBLISHER_ID = "4096893";
-const AYET_APP_ID = "25622";
-const AYET_RATE = 0.005;
-let balance = parseFloat(localStorage.getItem('te_balance')||'0');
-let videos = parseInt(localStorage.getItem('te_videos')||'0');
-function updateUI(){document.getElementById('balance').textContent='$'+balance.toFixed(7)}
+const RATE=0.005;
+let bal=parseFloat(localStorage.getItem('te_bal')||'0');
+let vids=parseInt(localStorage.getItem('te_vids')||'0');
+function upd(){balance.textContent='$'+bal.toFixed(7);videos.textContent=vids;}
+upd();
 function launch(){
-  ayetEarn();
-  balance+=AYET_RATE; videos++;
-  localStorage.setItem('te_balance',balance);
-  localStorage.setItem('te_videos',videos);
-  updateUI();
+  const uid=localStorage.getItem('te_uid')||'user_'+Math.random().toString(36).slice(2,8);
+  localStorage.setItem('te_uid',uid);
+  window.open(`https://www.ayetstudios.com/offers/web/25622?external_identifier=${uid}`,'_blank');
+  bal+=RATE;vids++;localStorage.setItem('te_bal',bal);localStorage.setItem('te_vids',vids);upd();
 }
-async function ayetEarn(){
-  const userId = localStorage.getItem('te_user') || 'user_'+Math.random().toString(36).slice(2,8);
-  localStorage.setItem('te_user',userId);
-  const url = `https://www.ayetstudios.com/offers/web/25622?external_identifier=${userId}`;
-  window.open(url,'_blank');
-}
-updateUI();
+function switchTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
 </script>
 </body>
 </html>
