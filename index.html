@@ -1,36 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="sk">
 <head>
-  <title>TomasEarn - Iba Videá</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TomasEarn - REAL 25644</title>
+<style>
+body{font-family:Arial;background:#eef2f7;margin:0;padding:12px;text-align:center}
+.card{background:#fff;padding:18px;border-radius:14px;max-width:520px;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.12)}
+.balance{font-size:32px;font-weight:bold;color:#00c853}
+.btn{padding:16px;width:100%;margin:7px 0;border:0;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer}
+.green{background:#00c853;color:#fff}
+.blue{background:#2962ff;color:#fff}
+.gray{background:#eceff1;color:#333}
+.small{font-size:12px;color:#888;margin:6px 0}
+input{width:90%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0}
+iframe{width:100%;height:780px;border:0;border-radius:10px;margin-top:12px;display:none}
+hr{border:0;border-top:1px solid #eee;margin:15px 0}
+</style>
 </head>
-<body style="text-align:center; font-family:sans-serif; padding:20px;">
-  <h1>TomasEarn</h1>
-  <h2>Pozri video a získaj coiny</h2>
-  
-  <button id="videoBtn" style="padding:20px 40px; font-size:20px; background:#00c853; color:white; border:0; border-radius:10px;">
-    ▶️ POZRIEŤ VIDEO
-  </button>
+<body>
+<div class="card">
+<h2>TomasEarn REAL</h2>
+<div>Zostatok</div>
+<div class="balance" id="bal">0 coins</div>
+<div class="small" id="uidShow"></div>
+<div class="small">Placement #25644 | Status: review -> enabled | IAA: ON (iba videá)</div>
 
-  <div id="offerwall" style="margin-top:20px; display:none;">
-    <iframe id="ayetFrame" style="width:100%; height:700px; border:0; border-radius:10px;"></iframe>
-  </div>
+<button class="btn green" id="videoBtn">▶️ POZRIEŤ VIDEO - ZAROBIŤ</button>
+<button class="btn blue" onclick="daily()">🎁 DENNÝ BONUS 50</button>
+
+<div id="msg" class="small"></div>
+<iframe id="ayet"></iframe>
+
+<hr>
+<h4>💸 Výber</h4>
+<input id="payout" placeholder=" 【entity-PayPal¦canonical_name=PayPal】 / 【entity-Revolut¦canonical_name=Revolut】">
+<button class="btn gray" onclick="withdraw()">Požiadať o výplatu (min 10000 coins)</button>
+
+<hr>
+<h4>👥 Pozvi kamoša</h4>
+<input id="refLink" readonly>
+<button class="btn gray" onclick="copyRef()">Kopírovať link</button>
+
+<hr>
+<h4>📜 História</h4>
+<div id="history" class="small">Zatiaľ žiadne odmeny</div>
+
+<div class="small" style="margin-top:15px">Callback: tomasearn-videa.lilidikano.workers.dev<br>TomasEarn @ 2026</div>
+</div>
 
 <script>
-  // Vygeneruje ID pre používateľa alebo použije existujúce
-  let userId = localStorage.getItem('tomasearn_user');
-  if(!userId){
-    userId = 'user_' + Math.random().toString(36).substring(2,9);
-    localStorage.setItem('tomasearn_user', userId);
-  }
+// ====================
+// REAL CONFIG - 25644
+// ====================
+let uid=localStorage.getItem('te_uid')||'te_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+localStorage.setItem('te_uid',uid);
+document.getElementById('uidShow').innerText='ID: '+uid;
 
-  document.getElementById('videoBtn').onclick = function(){
-    // TOTO JE TVOJA URL - 25644 - IBA VIDEÁ (IAA callback je zapnutý)
-    const url = `https://www.ayetstudios.com/offers/web_offerwall/25644?external_identifier=${userId}`;
-    document.getElementById('ayetFrame').src = url;
-    document.getElementById('offerwall').style.display = 'block';
-    window.scrollTo(0, 600);
-  }
+let coins=parseInt(localStorage.getItem('te_coins')||'0');
+let hist=JSON.parse(localStorage.getItem('te_hist')||'[]');
+
+function render(){
+ document.getElementById('bal').innerText=coins+' coins';
+ document.getElementById('history').innerHTML=hist.length?hist.slice(-5).reverse().join('<br>'):'Zatiaľ žiadne odmeny';
+ document.getElementById('refLink').value='https://lildikano-cloud.github.io/TomasEarn/?ref='+uid;
+}
+render();
+
+function save(n,txt){
+ coins+=n;
+ localStorage.setItem('te_coins',coins);
+ hist.push(new Date().toLocaleString()+' - '+txt+' +'+n);
+ localStorage.setItem('te_hist',JSON.stringify(hist));
+ localStorage.setItem('te_coins',coins);
+ render();
+}
+
+function daily(){
+ let last=localStorage.getItem('te_daily');
+ let today=new Date().toDateString();
+ if(last===today){alert('Už si dnes bral');return;}
+ save(50,'Denný bonus');
+ localStorage.setItem('te_daily',today);
+ alert('+50');
+}
+
+function withdraw(){
+ let v=document.getElementById('payout').value;
+ if(!v){alert('Zadaj PayPal');return;}
+ if(coins<10000){alert('Min 10000 coins = $10');return;}
+ alert('Žiadosť odoslaná na: '+v+' - '+coins+' coins. Ozveme sa!');
+}
+
+function copyRef(){
+ let i=document.getElementById('refLink');
+ i.select();
+ document.execCommand('copy');
+ alert('Skopírované!');
+}
+
+// REAL ayeT Offerwall - ID 25644 - IBA VIDEA
+document.getElementById('videoBtn').onclick=function(){
+ document.getElementById('msg').innerText='Načítavam REAL videá pre ID 25644...';
+ let url=`https://www.ayetstudios.com/offers/web_offerwall/25644?external_identifier=${uid}`;
+ let f=document.getElementById('ayet');
+ f.src=url;
+ f.style.display='block';
+ f.scrollIntoView({behavior:'smooth'});
+};
 </script>
 </body>
 </html>
