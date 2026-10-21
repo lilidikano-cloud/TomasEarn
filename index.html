@@ -47,19 +47,73 @@ body{background:#0f0f0f;color:#fff;font-family:Arial,sans-serif;padding:20px}
 <h1 style="text-align:center;margin-bottom:20px">🔥 TomasEarn</h1>
 <div class="balance"><p>Zostatok</p><h2 id="coins">0</h2><p>COINOV = $<span id="usd">0.00</span></p><p style="font-size:12px">1000 coinov = $1</p></div>
 <div class="video-card"><h3>📹 Pozri video a zarob</h3><p style="font-size:13px;color:#aaa;margin:8px 0">50 coinov = $0.05 za video</p><button class="btn" onclick="watchVideo()">▶️ SLEDOVAŤ VIDEO (+50)</button><p id="status" style="font-size:12px;color:#00ff88;margin-top:8px"></p></div>
+
+<div class="video-card" style="border:1px dashed #00ff88">
+<h3>🎁 Denný bonus</h3>
+<p style="font-size:13px;color:#aaa;margin:8px 0">Vráť sa každý deň: +100 coinov</p>
+<button class="btn" style="background:#2a2a2a;color:#fff" id="dailyBtn" onclick="claimDaily()">🎁 VYZVIHNÚŤ BONUS (+100)</button>
+<p id="dailyStatus" style="font-size:12px;color:#888;margin-top:6px"></p>
+</div>
+
+<div class="video-card" style="border:1px dashed #00ff88">
+<h3>👥 Pozvi kamoša +200 coinov</h3>
+<p style="font-size:13px;color:#aaa;margin:8px 0">Za každého pozvaného dostaneš 200 coinov. Kamoš dostane 100 na začiatok.</p>
+<div style="background:#0f0f0f;border:1px dashed #333;border-radius:8px;padding:10px;margin:8px 0;text-align:center">
+<p style="font-size:11px;color:#666">Tvoj pozývací link:</p>
+<p id="inviteLink" style="font-size:11px;color:#00ff88;word-break:break-all;margin:6px 0">https://lilidikano-cloud.github.io/TomasEarn/?ref=...</p>
+<button class="btn" style="background:#2a2a2a;color:#fff;padding:10px" onclick="copyInvite()">📋 KOPÍROVAŤ LINK</button>
+</div>
+<p style="font-size:12px;color:#888">Pozvaných: <b id="friendCount">0</b> • Zarobené: <b id="refEarn">0</b> coinov</p>
+</div>
+
+<div class="video-card">
+<h3>🏆 TOP Zarábajúci</h3>
+<div style="font-size:13px">
+<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222"><span>🥇 @CryptoKing</span><span style="color:#00ff88">$47.20</span></div>
+<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222"><span>🥈 @VideoLover</span><span style="color:#00ff88">$32.50</span></div>
+<div style="display:flex;justify-content:space-between;padding:6px 0"><span>🥉 @You</span><span id="myRank" style="color:#00ff88">$0.00</span></div>
+</div>
+</div>
+
 <button class="btn btn-withdraw" onclick="openWithdraw()">💸 VYBRAŤ USDT - MIN $1</button>
+
 <p class="small" style="text-align:center">USDT TRC20 • Minimum 1000 coinov ($1)</p>
 </div>
 <div class="modal" id="withdrawModal"><div class="modal-box"><h3>💸 Výber USDT $1</h3><p>Máš: <b id="modalCoins">0</b> = $<b id="modalUsd">0</b></p><label style="font-size:13px;margin-top:15px;display:block">USDT adresa (TRC20 - začína na T)</label><input type="text" id="usdtAddr" placeholder="TQ..."><p class="warn">⚠️ LEN TRC20!</p><label style="font-size:13px;margin-top:10px;display:block">Suma $ (min 1)</label><input type="number" id="withdrawAmount" value="1" min="1"><button class="btn" onclick="submitWithdraw()">ODOSLAŤ</button><button class="btn" style="background:#333;color:#fff;margin-top:8px" onclick="closeWithdraw()">ZRUŠIŤ</button><p id="withdrawStatus" style="font-size:13px;margin-top:10px"></p></div></div>
 <script>
 const WORKER_URL="https://tomasearn-videa.lilidikano.workers.dev";
 let coins=parseInt(localStorage.getItem('te_coins')||'0');
-function updateUI(){document.getElementById('coins').innerText=coins;document.getElementById('usd').innerText=(coins/1000).toFixed(2);document.getElementById('modalCoins').innerText=coins;document.getElementById('modalUsd').innerText=(coins/1000).toFixed(2);}
+
+let userId=localStorage.getItem('te_uid')||'TE'+Math.random().toString(36).substr(2,6).toUpperCase();
+localStorage.setItem('te_uid',userId);
+let friends=parseInt(localStorage.getItem('te_friends')||'0');
+let lastDaily=localStorage.getItem('te_lastDaily')||'';
+function updateUI(){document.getElementById('coins').innerText=coins;document.getElementById('usd').innerText=(coins/1000).toFixed(2);document.getElementById('modalCoins').innerText=coins;document.getElementById('modalUsd').innerText=(coins/1000).toFixed(2);
+let fc=document.getElementById('friendCount'); if(fc) fc.innerText=friends;
+let re=document.getElementById('refEarn'); if(re) re.innerText=friends*200;
+let mr=document.getElementById('myRank'); if(mr) mr.innerText='$'+(coins/1000).toFixed(2);
+let il=document.getElementById('inviteLink'); if(il) il.innerText='https://lilidikano-cloud.github.io/TomasEarn/?ref='+userId;
+}
 updateUI();
-function watchVideo(){let s=document.getElementById('status');s.innerText="⏳ Pozerám...";setTimeout(async()=>{coins+=50;localStorage.setItem('te_coins',coins);updateUI();s.innerText="✅ +50 coinov!";try{await fetch(WORKER_URL+"/ayet-earn",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({coins:50,usd:0.05,total:coins})})}catch(e){}},2000);}
+function claimDaily(){
+ let today=new Date().toDateString();
+ if(lastDaily===today){document.getElementById('dailyStatus').innerText='❌ Už dnes vybrané!';return;}
+ coins+=100;lastDaily=today;
+ localStorage.setItem('te_coins',coins);localStorage.setItem('te_lastDaily',today);
+ updateUI();document.getElementById('dailyStatus').innerText='✅ +100 coinov!';
+}
+function copyInvite(){
+ let link=document.getElementById('inviteLink').innerText;
+ navigator.clipboard.writeText(link).then(()=>alert('✅ Link skopírovaný!\n'+link));
+}
+async function submitWithdraw(){const addr=document.getElementById('usdtAddr').value.trim();const amount=parseFloat(document.getElementById('withdrawAmount').value);const status=document.getElementById('withdrawStatus');if(!addr.startsWith('T')||addr.length<20){status.innerText="❌ Zlá adresa! Musí začínať na T";status.style.color="#ff4444";return;}if(amount<1||amount>coins/1000){status.innerText="❌ Zlá suma!";return;}status.innerText="⏳ Odosielam...";try{await fetch(WORKER_URL+"/withdraw",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"USDT",chain:"TRC20",address:addr,amount:amount,coins:amount*1000,userId:userId})});coins-=amount*1000;localStorage.setItem('te_coins',coins);updateUI();status.innerText="✅ Žiadosť odoslaná! $"+amount+" na "+addr.slice(0,6)+"...";status.style.color="#00ff88";setTimeout(closeWithdraw,3000);}catch(e){status.innerText="❌ Chyba";}}
+
+function watchVideo(){let s=document.getElementById('status');s.innerText="⏳ Pozerám...";setTimeout(async()=>{coins+=50;localStorage.setItem('te_coins',coins);updateUI();s.innerText="✅ +50 coinov!";try{await fetch(WORKER_URL+"/ayet-earn",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({coins:50,usd:0.05,total:coins,userId:userId})})}catch(e){}},2000);}
+// ref bonus check
+(function(){let p=new URLSearchParams(location.search);let r=p.get('ref');if(r&&!localStorage.getItem('te_usedRef')){coins+=100;localStorage.setItem('te_coins',coins);localStorage.setItem('te_usedRef',r);alert('🎉 +100 coinov za pozvánku od '+r+'!');}} )();
 function openWithdraw(){if(coins<1000){alert("Máš len "+coins+" coinov. Minimum 1000!");return;}document.getElementById('withdrawModal').classList.add('active');}
 function closeWithdraw(){document.getElementById('withdrawModal').classList.remove('active');}
-async function submitWithdraw(){const addr=document.getElementById('usdtAddr').value.trim();const amount=parseFloat(document.getElementById('withdrawAmount').value);const status=document.getElementById('withdrawStatus');if(!addr.startsWith('T')||addr.length<20){status.innerText="❌ Zlá adresa! Musí začínať na T";status.style.color="#ff4444";return;}if(amount<1||amount>coins/1000){status.innerText="❌ Zlá suma!";return;}status.innerText="⏳ Odosielam...";try{await fetch(WORKER_URL+"/withdraw",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"USDT",chain:"TRC20",address:addr,amount:amount,coins:amount*1000})});coins-=amount*1000;localStorage.setItem('te_coins',coins);updateUI();status.innerText="✅ Žiadosť odoslaná! $"+amount+" na "+addr.slice(0,6)+"...";status.style.color="#00ff88";setTimeout(closeWithdraw,3000);}catch(e){status.innerText="❌ Chyba";}}
+
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
