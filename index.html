@@ -64,7 +64,6 @@ body{background:#0f0f0f;color:#fff;font-family:Arial,sans-serif;padding:15px;pad
 <div class="balance">
 <p style="font-size:11px;letter-spacing:1px">ZOSTATOK</p>
 <h2 id="usdBal">$0.0000</h2>
-<p style="font-size:11px">$0.0025 / video • 400 videí = $1.00 • Worker LIVE ✓</p>
 </div>
 
 <div class="grid2">
@@ -99,7 +98,10 @@ Dnes: <b id="todayCount">0</b> • Celkom: <b id="totalCount">0</b> • Dnes: <b
 <p id="inviteLink" style="font-size:10px;color:#00ff88;word-break:break-all;margin:6px 0">...</p>
 <button class="btn btn-dark" style="padding:9px;font-size:12px" onclick="copyInvite()">📋 KOPÍROVAŤ LINK</button>
 </div>
-<p style="font-size:10px;color:#888">Za kamoša: +$0.02 + $0.05 po 20 videách</p>
+<div style="background:#111;border-radius:8px;padding:12px;margin-top:10px;text-align:left;border:1px solid #222">
+<p style="color:#00ff88;font-weight:bold;font-size:14px;margin-bottom:6px">💰 Provízia z pozvánky: 5%</p>
+<p style="font-size:13px">🔹 Priamo pozvaný: <b style="color:#00ff88;font-size:15px">5%</b> z jeho zárobku</p>
+</div>
 </div>
 
 <p class="small">USDT TRC20 • Min $1.00 • Cloudflare LIVE<br>tomasearn-videa.lilidikano.workers.dev</p>
@@ -114,7 +116,7 @@ Dnes: <b id="todayCount">0</b> • Celkom: <b id="totalCount">0</b> • Dnes: <b
 <div class="stat-box"><b id="sTotalVideos">0</b><span>celkom videí</span></div>
 <div class="stat-box"><b id="sTotalUsd">$0.0000</b><span>celkom $</span></div>
 <div class="stat-box"><b id="sWithdrawn">$0.00</b><span>vybrané</span></div>
-<div class="stat-box"><b id="sToDollar">400 videí</b><span>do $1</span></div>
+<div class="stat-box"><b id="sRefEarn">$0.0000</b><span>z pozvánok 5%</span></div>
 </div>
 <div style="background:#0f0f0f;border-radius:8px;padding:10px;margin-top:10px;font-size:11px">
 <p>🆔 ID: <b id="sUserId">TE...</b></p>
@@ -148,6 +150,10 @@ let withdrawn=parseFloat(localStorage.getItem('te_withdrawn')||'0');
 let startDate=localStorage.getItem('te_start')||new Date().toLocaleDateString('sk-SK');
 let videoLog=JSON.parse(localStorage.getItem('te_vlog')||'[]');
 let withdrawLog=JSON.parse(localStorage.getItem('te_wlog')||'[]');
+let refEarnings=parseFloat(localStorage.getItem('te_refEarn')||'0');
+let refL1=parseInt(localStorage.getItem('te_refL1')||'0');
+let refL2=parseInt(localStorage.getItem('te_refL2')||'0');
+let refL3=parseInt(localStorage.getItem('te_refL3')||'0');
 let userId=localStorage.getItem('te_uid')||'TE'+Math.random().toString(36).substr(2,6).toUpperCase();
 localStorage.setItem('te_uid',userId);
 if(!localStorage.getItem('te_start')){localStorage.setItem('te_start',startDate);localStorage.setItem('te_startRaw',Date.now());}
@@ -168,7 +174,8 @@ function updateUI(){
  let el3=document.getElementById('sTotalVideos'); if(el3) el3.innerText=totalVideos;
  let el4=document.getElementById('sTotalUsd'); if(el4) el4.innerText='$'+balance.toFixed(4);
  let el5=document.getElementById('sWithdrawn'); if(el5) el5.innerText='$'+withdrawn.toFixed(2);
- let el6=document.getElementById('sToDollar'); if(el6) el6.innerText=Math.max(0,Math.ceil((1-balance)/0.0025))+' videí';
+ // sToDollar removed
+ let elRef=document.getElementById('sRefEarn'); if(elRef) elRef.innerText='$'+refEarnings.toFixed(4)+' (L1:'+refL1+' L2:'+refL2+' L3:'+refL3+')';
  let el7=document.getElementById('sUserId'); if(el7) el7.innerText=userId;
  let el8=document.getElementById('sStartDate'); if(el8) el8.innerText=startDate;
 }
@@ -192,6 +199,7 @@ function watchVideo(){
  ayetBox.style.display='block';
  timerEl.innerText=seconds+'s';
  progBar.style.width='0%';
+ progBar.style.background='linear-gradient(90deg,#00ff88,#00cc66)';
  status.innerText='⏳ Musíš sledovať 30s, inak nedostaneš $';
  status.style.color='#ffaa00';
 
@@ -203,7 +211,6 @@ function watchVideo(){
    btn.innerText='⏳ SLEDUJEM... '+seconds+'s';
    if(seconds<=0){
      clearInterval(timerInterval);
-     // odmena
      balance+=0.0025; balance=parseFloat(balance.toFixed(4));
      totalVideos++; todayVideos++;
      localStorage.setItem('te_usd',balance.toFixed(4));
@@ -213,34 +220,49 @@ function watchVideo(){
      if(videoLog.length>50) videoLog.pop();
      localStorage.setItem('te_vlog',JSON.stringify(videoLog));
      updateUI();
-     timerEl.innerText='✅ HOTOVO!';
+     timerEl.innerText='✅ HOTOVO! +$0.0025';
      progBar.style.width='100%';
-     progBar.style.background='#00ff88';
      btn.disabled=false;
      btn.innerText='▶️ SLEDOVAŤ ĎALŠIE VIDEO (+$0.0025)';
-     status.innerText='✅ +$0.0025 pripísaných! Celkom: $'+balance.toFixed(4);
+     status.innerText='✅ +$0.0025! Celkom: $'+balance.toFixed(4);
      status.style.color='#00ff88';
      isWatching=false;
-     setTimeout(()=>{timerEl.style.display='none';progWrap.style.display='none';ayetBox.style.display='none';},2000);
-     // worker ping
      try{fetch(WORKER_URL+"/ayet-earn",{method:"POST",mode:"cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({usd:0.0025,total:balance,userId:userId,time:new Date().toISOString()})});}catch(e){}
+     setTimeout(()=>{timerEl.style.display='none';progWrap.style.display='none';ayetBox.style.display='none';},2000);
    }
  },1000);
 }
-
 function copyInvite(){navigator.clipboard.writeText(document.getElementById('inviteLink').innerText).then(()=>alert('✅ Link skopírovaný!'));}
 
+// 1-5% referral system - nízke % aby majiteľ neprerábal
 (function(){
  let p=new URLSearchParams(location.search);
  let r=p.get('ref');
  if(r&&!localStorage.getItem('te_usedRef')&&r!==userId){
-   balance+=0.02;balance=parseFloat(balance.toFixed(4));
-   localStorage.setItem('te_usd',balance.toFixed(4));
    localStorage.setItem('te_usedRef',r);
+   balance+=0.02; // uvítací bonus pre nového
+   balance=parseFloat(balance.toFixed(4));
+   localStorage.setItem('te_usd',balance.toFixed(4));
    updateUI();
-   alert('🎉 +$0.02 za pozvánku od '+r+'!');
+   alert('🎉 +$0.02 uvítací bonus! Pozval ťa '+r+'\nOn dostáva len 5% z tvojho zárobku, takže neprerába.');
+   try{fetch(WORKER_URL+"/ref-new",{method:"POST",mode:"cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({newUser:userId,ref:r,time:new Date().toISOString()})});}catch(e){}
  }
 })();
+
+// 5% provízia - ak tvoj pozvaný zarobí $0.0025 → ty $0.000125
+function addRefEarning(amount){
+  let commission=amount*0.05; // 5%
+  refEarnings+=commission;
+  refEarnings=parseFloat(refEarnings.toFixed(6));
+  refL1++;
+  localStorage.setItem('te_refEarn',refEarnings.toString());
+  localStorage.setItem('te_refL1',refL1.toString());
+  balance+=commission;
+  balance=parseFloat(balance.toFixed(6));
+  localStorage.setItem('te_usd',balance.toFixed(6));
+  updateUI();
+}
+
 
 function openStats(){
  document.getElementById('withdrawHistory').innerHTML=withdrawLog.length?withdrawLog.map(w=>'<div>💸 $'+w.amount+' → '+w.addr.slice(0,6)+' '+w.date+'</div>').join(''):'Zatiaľ žiadne výbery';
