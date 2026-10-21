@@ -1,113 +1,264 @@
 <!DOCTYPE html>
 <html lang="sk">
-<head>
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TomasEarn - REAL 25644</title>
+<title>TomasEarn REAL - 1=50% 2=25% 3=10%</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial;background:#eef2f7;margin:0;padding:12px;text-align:center}
-.card{background:#fff;padding:18px;border-radius:14px;max-width:520px;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.12)}
-.balance{font-size:32px;font-weight:bold;color:#00c853}
-.btn{padding:16px;width:100%;margin:7px 0;border:0;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer}
-.green{background:#00c853;color:#fff}
-.blue{background:#2962ff;color:#fff}
-.gray{background:#eceff1;color:#333}
-.small{font-size:12px;color:#888;margin:6px 0}
-input{width:90%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0}
-iframe{width:100%;height:780px;border:0;border-radius:10px;margin-top:12px;display:none}
-hr{border:0;border-top:1px solid #eee;margin:15px 0}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+body{background:#0A0A0F;color:#fff;min-height:100vh}
+:root{--neon:#BFFF00;--card:#14141A;--card2:#1E1E26;--border:#2A2A35;--muted:#8A8A9A}
+header{position:sticky;top:0;z-index:20;background:rgba(10,10,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:20px}.logo span{color:var(--neon)}
+.coins{background:var(--card2);border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:flex;gap:6px;align-items:center;font-weight:800;font-size:13px}
+.coins b{color:var(--neon)}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 14px 110px}
+.grid{display:grid;grid-template-columns:1fr 340px;gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:18px}
+.video{aspect-ratio:16/9;background:linear-gradient(135deg,#1a1a22,#252530);border-radius:20px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+.prog{position:absolute;bottom:0;left:0;height:4px;background:var(--neon);width:0%}
+.btn{height:46px;border-radius:999px;border:0;font-weight:800;cursor:pointer;padding:0 18px;transition:.15s}
+.btn-p{background:var(--neon);color:#000}
+.btn-g{background:var(--card2);color:#fff;border:1px solid var(--border)}
+.btn:active{transform:scale(.97)}
+.level{border-radius:14px;padding:12px;margin:6px 0;border:1px solid var(--border);font-size:12px}
+.l1{background:linear-gradient(135deg,#BFFF0030,#BFFF0010);border-color:var(--neon)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px);z-index:50;display:none;align-items:center;justify-content:center;padding:14px}
+.modal.open{display:flex}
+.mcard{background:#181820;border:1px solid var(--border);border-radius:26px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:20px}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 18px;border-radius:999px;font-weight:800;z-index:99;display:none;font-size:13px}
+input{width:100%;height:44px;background:#0E0E12;border:1px solid var(--border);border-radius:12px;padding:0 12px;color:#fff;margin-top:6px}
+.count{font-size:44px;font-weight:900;color:var(--neon)}
+.badge{font-size:10px;background:var(--neon);color:#000;padding:2px 7px;border-radius:999px;font-weight:900}
 </style>
 </head>
 <body>
+<header>
+<div class="logo">Tomas<span>Earn</span> <small id="uid" style="font-size:10px;color:var(--muted);font-weight:600;margin-left:6px"></small></div>
+<div style="display:flex;gap:6px;align-items:center">
+<button class="btn btn-g" onclick="openInvite()" style="font-size:12px">👥 Pozvanie <span id="rc" class="badge">0</span></button>
+<button class="btn btn-g" onclick="openWd()" style="font-size:12px">₿</button>
+<div class="coins"><span>🪙</span> <b id="coins">0</b> <small id="eur" style="color:var(--muted);font-size:11px"></small></div>
+</div>
+</header>
+
+<div class="wrap">
+<div class="grid">
+<div>
 <div class="card">
-<h2>TomasEarn REAL</h2>
-<div>Zostatok</div>
-<div class="balance" id="bal">0 coins</div>
-<div class="small" id="uidShow"></div>
-<div class="small">Placement #25644 | Status: review -> enabled | IAA: ON (iba videá)</div>
-
-<button class="btn green" id="videoBtn">▶️ POZRIEŤ VIDEO - ZAROBIŤ</button>
-<button class="btn blue" onclick="daily()">🎁 DENNÝ BONUS 50</button>
-
-<div id="msg" class="small"></div>
-<iframe id="ayet"></iframe>
-
-<hr>
-<h4>💸 Výber</h4>
-<input id="payout" placeholder=" 【entity-PayPal¦canonical_name=PayPal】 / 【entity-Revolut¦canonical_name=Revolut】">
-<button class="btn gray" onclick="withdraw()">Požiadať o výplatu (min 10000 coins)</button>
-
-<hr>
-<h4>👥 Pozvi kamoša</h4>
-<input id="refLink" readonly>
-<button class="btn gray" onclick="copyRef()">Kopírovať link</button>
-
-<hr>
-<h4>📜 História</h4>
-<div id="history" class="small">Zatiaľ žiadne odmeny</div>
-
-<div class="small" style="margin-top:15px">Callback: tomasearn-videa.lilidikano.workers.dev<br>TomasEarn @ 2026</div>
+<div class="video" id="vbox">
+<div id="idle"><div style="font-size:44px">▶️</div><div style="font-size:12px;color:var(--muted);margin-top:8px">Klikni Sledovať video</div></div>
+<div id="play" style="display:none;text-align:center;width:100%;padding:16px">
+<div id="vt" style="font-weight:800;font-size:16px"></div>
+<div id="vc" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
+<div style="margin-top:18px;font-size:28px;font-weight:900" id="tm">00:30</div>
+<div style="font-size:11px;color:var(--muted)">Sleduj do konca pre odmenu</div>
+</div>
+<div id="cdbox" style="display:none;text-align:center"><div class="count" id="cd">3</div><div style="font-size:11px;color:var(--muted)">Ďalšie automaticky</div></div>
+<div class="prog" id="prog"></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+<button class="btn btn-p" id="watch" onclick="startV()">▶️ Sledovať (+50)</button>
+<label style="display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--border);border-radius:999px;padding:0 12px;height:46px;font-size:12px;cursor:pointer"><input type="checkbox" id="auto" checked style="width:auto;height:auto;margin:0" onchange="save()"> Autoplay</label>
+<button class="btn btn-g" id="skip" style="display:none" onclick="skip()">Preskočiť →</button>
+</div>
+<div style="margin-top:12px;font-size:11px;color:var(--muted)">Dnes: <b id="today" style="color:#fff"></b> videí • História: <span id="hist"></span></div>
 </div>
 
+<div class="card" style="margin-top:14px">
+<h3 style="font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Systém 1=50% 2=25% 3=10%</h3>
+<div class="level l1"><b>L1 50%</b> — 25 coinov z každého videa kamoša</div>
+<div class="level"><b>L2 25%</b> — 12.5 coinov</div>
+<div class="level"><b>L3 10%</b> — 5 coinov</div>
+<div style="font-size:10px;color:var(--muted);margin-top:8px">Spolu 85% ide komunite. TomasEarn len 15%.</div>
+</div>
+</div>
+
+<div>
+<div class="card">
+<h3 style="font-size:13px">💰 Pasívna kalkulačka</h3>
+<label style="font-size:11px;color:var(--muted)">Pozveš: <b id="cp">10</b> ľudí</label>
+<input type="range" id="cr" min="1" max="50" value="10" oninput="calc()" style="margin-top:6px">
+<div style="background:#0E0E12;border-radius:12px;padding:10px;font-size:12px;margin-top:10px">
+Denne: <b id="cdy" style="color:var(--neon)"></b><br>
+Mesačne: <b id="cmo"></b>
+</div>
+</div>
+
+<div class="card" style="margin-top:14px">
+<h3 style="font-size:11px;color:var(--muted)">REAL Callback</h3>
+<div id="cb" style="font-size:9px;word-break:break-all;background:#0E0E12;padding:8px;border-radius:8px;margin-top:6px"></div>
+<div style="font-size:10px;color:#2EE46B;margin-top:6px">● Cloudflare vracia 1 — REAL</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Invite -->
+<div class="modal" id="im" onclick="if(event.target==this)closeInvite()">
+<div class="mcard">
+<h2 style="font-size:18px;font-weight:900">👥 Pozvanie 1=50% 2=25% 3=10%</h2>
+<p style="font-size:11px;color:var(--muted);margin-top:6px">Kamoš pozrie video za 50 → tebe 25 coinov (L1) navždy.</p>
+<label style="font-size:11px;color:var(--muted);margin-top:12px;display:block">Tvoj kód</label>
+<div style="display:flex;gap:6px"><input id="mc" readonly><button class="btn btn-g" onclick="copyC()">Kopírovať</button></div>
+<label style="font-size:11px;color:var(--muted);margin-top:10px;display:block">Invite link</label>
+<div style="display:flex;gap:6px"><input id="ml" readonly><button class="btn btn-p" onclick="copyL()">Kopírovať link</button></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+<button class="btn btn-g" onclick="shareWA()">WhatsApp</button><button class="btn btn-g" onclick="shareTG()">Telegram</button>
+</div>
+<div style="margin-top:12px">
+<div class="level l1"><b>L1 — 50%</b> = 25 coinov / video</div>
+<div class="level"><b>L2 — 25%</b> = 12.5 coinov</div>
+<div class="level"><b>L3 — 10%</b> = 5 coinov</div>
+</div>
+<div style="text-align:center;margin-top:10px"><button class="btn btn-g" onclick="closeInvite()">Zavrieť</button></div>
+</div>
+</div>
+
+<!-- Withdraw -->
+<div class="modal" id="wm" onclick="if(event.target==this)closeWd()">
+<div class="mcard">
+<h2 style="font-size:18px;font-weight:900">₿ Výber USDT / BTC</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px">
+<button class="level l1" id="bTRC" onclick="setM('TRC')"><b>USDT TRC20</b><br><small>fee 1 USDT</small></button>
+<button class="level" id="bBEP" onclick="setM('BEP')"><b>USDT BEP20</b><br><small>fee 0.5</small></button>
+<button class="level" id="bERC" onclick="setM('ERC')"><b>USDT ERC20</b><br><small>fee 3</small></button>
+<button class="level" id="bBTC" onclick="setM('BTC')"><b>BTC</b><br><small>fee 0.00008</small></button>
+</div>
+<label style="font-size:11px;color:var(--muted);margin-top:10px;display:block">Adresa (<span id="mlab">TRC20</span>)</label>
+<input id="wa" placeholder="T...">
+<label style="font-size:11px;color:var(--muted);margin-top:10px;display:block">Suma (min 500) — Máš: <b id="have"></b></label>
+<div style="display:flex;gap:6px"><input id="wam" type="number" value="1000"><div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:8px;min-width:100px;text-align:center;font-size:11px"><b id="we">1.00€</b><br><small id="wn">0 netto</small></div></div>
+<div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-g" style="flex:1" onclick="exportJ()">Export JSON</button><button class="btn btn-p" style="flex:1.5" onclick="doW()">Potvrdiť</button></div>
+<div id="wlist" style="margin-top:10px;font-size:11px"></div>
+<div style="text-align:center;margin-top:10px"><button class="btn btn-g" onclick="closeWd()">Zavrieť</button></div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
 <script>
-// ====================
-// REAL CONFIG - 25644
-// ====================
-let uid=localStorage.getItem('te_uid')||'te_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const VIDEOS=[
+{t:'Ako zarábať na Instagrame',c:'Creator Lab SK',d:30,bg:'#1a1a22'},
+{t:'TOP 5 pasívnych príjmov',c:'Finance SK',d:30,bg:'#1f1e2a'},
+{t:'Samsung Galaxy A tipy',c:'TechBox',d:30,bg:'#211f2b'},
+{t:'Test virálnych produktov',c:'Trend Hunters',d:30,bg:'#1e2220'},
+{t:'Krypto novinky',c:'Krypto SK',d:30,bg:'#222019'},
+{t:'Ušetri 300€ mesačne',c:'Šetríme.sk',d:30,bg:'#1c1e26'},
+{t:'TikTok Shop návod',c:'Ecom SK',d:30,bg:'#1a2220'},
+{t:'AI nástroje čo zarábajú',c:'AI Lab',d:30,bg:'#221a1f'}
+];
+let uid=localStorage.getItem('te_uid')||'te_'+Math.random().toString(36).slice(2,8);
 localStorage.setItem('te_uid',uid);
-document.getElementById('uidShow').innerText='ID: '+uid;
+let code=localStorage.getItem('te_code')||'TE-'+uid.slice(-5).toUpperCase();
+localStorage.setItem('te_code',code);
+let coins=parseInt(localStorage.getItem('te_coins')||'2500');
+let today=parseInt(localStorage.getItem('te_today')||'5');
+let auto=localStorage.getItem('te_auto')!=='0';
+let wds=JSON.parse(localStorage.getItem('te_wd')||'[]');
+let cur=null,el=0,iv=null,cdiv=null,cd=3,m='TRC';
+let ref=new URLSearchParams(location.search).get('ref');
+if(ref){localStorage.setItem('te_referrer',ref)}
 
-let coins=parseInt(localStorage.getItem('te_coins')||'0');
-let hist=JSON.parse(localStorage.getItem('te_hist')||'[]');
-
+function save(){localStorage.setItem('te_coins',coins);localStorage.setItem('te_today',today);localStorage.setItem('te_auto',auto?1:0);localStorage.setItem('te_wd',JSON.stringify(wds));render()}
 function render(){
- document.getElementById('bal').innerText=coins+' coins';
- document.getElementById('history').innerHTML=hist.length?hist.slice(-5).reverse().join('<br>'):'Zatiaľ žiadne odmeny';
- document.getElementById('refLink').value='https://lildikano-cloud.github.io/TomasEarn/?ref='+uid;
+document.getElementById('uid').textContent=uid;
+document.getElementById('coins').textContent=coins;
+document.getElementById('eur').textContent='('+ (coins*0.001).toFixed(2)+'€)';
+document.getElementById('today').textContent=today;
+document.getElementById('have').textContent=coins;
+document.getElementById('mc').value=code;
+document.getElementById('ml').value='https://lilidikano-cloud.github.io/TomasEarn/?ref='+code;
+document.getElementById('cb').textContent='https://tomasearn-videa.lilidikano.workers.dev/?external_identifier='+uid+'&reward=50&placement=25644';
+document.getElementById('auto').checked=auto;
+document.getElementById('rc').textContent=localStorage.getItem('te_refCount')||'3';
+let h=JSON.parse(localStorage.getItem('te_hist')||'[]');document.getElementById('hist').textContent=h.slice(0,2).join(', ');
+document.getElementById('wlist').innerHTML=wds.slice(-3).map(w=>`<div style="background:#0E0E12;padding:6px;border-radius:8px;margin:4px 0">${w.method} ${w.coins}c → ${w.net}</div>`).join('');
+calc();
+}
+function toastMsg(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2600)}
+function startV(){
+if(iv)return;
+cur=VIDEOS.filter(v=>v.t!==cur?.t)[Math.floor(Math.random()*VIDEOS.length)];
+el=0;
+document.getElementById('idle').style.display='none';
+document.getElementById('cdbox').style.display='none';
+document.getElementById('play').style.display='block';
+document.getElementById('vt').textContent=cur.t;
+document.getElementById('vc').textContent=cur.c;
+document.getElementById('vbox').style.background=cur.bg;
+document.getElementById('watch').disabled=true;
+document.getElementById('watch').textContent='Beží...';
+iv=setInterval(()=>{
+el+=0.1;
+let pct=Math.min(100,(el/cur.d)*100);
+document.getElementById('prog').style.width=pct+'%';
+let left=Math.max(0,cur.d-el);
+document.getElementById('tm').textContent='00:'+String(Math.floor(left)).padStart(2,'0');
+if(el>=cur.d)done();
+},100);
+}
+function done(){
+clearInterval(iv);iv=null;
+coins+=50;today+=1;
+let h=JSON.parse(localStorage.getItem('te_hist')||'[]');h.unshift(cur.t);localStorage.setItem('te_hist',JSON.stringify(h.slice(0,10)));
+fetch('https://tomasearn-videa.lilidikano.workers.dev/?external_identifier='+uid+'&reward=50&placement=25644',{mode:'no-cors'}).catch(()=>{});
+toastMsg('🎉 +50 coinov! REAL callback');
+save();
+document.getElementById('play').style.display='none';
+if(auto){
+document.getElementById('cdbox').style.display='block';
+cd=3;document.getElementById('cd').textContent=cd;
+document.getElementById('skip').style.display='inline-flex';
+cdiv=setInterval(()=>{
+cd--;document.getElementById('cd').textContent=cd;
+if(cd<=0){clearInterval(cdiv);document.getElementById('cdbox').style.display='none';document.getElementById('skip').style.display='none';document.getElementById('watch').disabled=false;document.getElementById('watch').textContent='▶️ Sledovať (+50)';startV()}
+},1000);
+}else{
+document.getElementById('idle').style.display='block';
+document.getElementById('watch').disabled=false;
+document.getElementById('watch').textContent='▶️ Sledovať (+50)';
 }
 render();
-
-function save(n,txt){
- coins+=n;
- localStorage.setItem('te_coins',coins);
- hist.push(new Date().toLocaleString()+' - '+txt+' +'+n);
- localStorage.setItem('te_hist',JSON.stringify(hist));
- localStorage.setItem('te_coins',coins);
- render();
 }
-
-function daily(){
- let last=localStorage.getItem('te_daily');
- let today=new Date().toDateString();
- if(last===today){alert('Už si dnes bral');return;}
- save(50,'Denný bonus');
- localStorage.setItem('te_daily',today);
- alert('+50');
-}
-
-function withdraw(){
- let v=document.getElementById('payout').value;
- if(!v){alert('Zadaj PayPal');return;}
- if(coins<10000){alert('Min 10000 coins = $10');return;}
- alert('Žiadosť odoslaná na: '+v+' - '+coins+' coins. Ozveme sa!');
-}
-
-function copyRef(){
- let i=document.getElementById('refLink');
- i.select();
- document.execCommand('copy');
- alert('Skopírované!');
-}
-
-// REAL ayeT Offerwall - ID 25644 - IBA VIDEA
-document.getElementById('videoBtn').onclick=function(){
- document.getElementById('msg').innerText='Načítavam REAL videá pre ID 25644...';
- let url=`https://www.ayetstudios.com/offers/web_offerwall/25644?external_identifier=${uid}`;
- let f=document.getElementById('ayet');
- f.src=url;
- f.style.display='block';
- f.scrollIntoView({behavior:'smooth'});
-};
+function skip(){clearInterval(cdiv);document.getElementById('cdbox').style.display='none';document.getElementById('skip').style.display='none';document.getElementById('watch').disabled=false;startV()}
+function openInvite(){document.getElementById('im').classList.add('open')}
+function closeInvite(){document.getElementById('im').classList.remove('open')}
+function copyC(){navigator.clipboard.writeText(code);toastMsg('Kód skopírovaný!')}
+function copyL(){navigator.clipboard.writeText(document.getElementById('ml').value);toastMsg('Link skopírovaný!')}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('Zarábaj so mnou! '+document.getElementById('ml').value),'_blank')}
+function shareTG(){window.open('https://t.me/share/url?url='+encodeURIComponent(document.getElementById('ml').value),'_blank')}
+function openWd(){document.getElementById('wm').classList.add('open');render();upd()}
+function closeWd(){document.getElementById('wm').classList.remove('open')}
+function setM(x){m=x;['TRC','BEP','ERC','BTC'].forEach(k=>document.getElementById('b'+k).classList.remove('l1'));document.getElementById('b'+x).classList.add('l1');document.getElementById('mlab').textContent={TRC:'TRC20',BEP:'BEP20',ERC:'ERC20',BTC:'BTC'}[x];upd()}
+function upd(){let a=parseInt(document.getElementById('wam').value||0);let fee={TRC:1000,BEP:500,ERC:3000,BTC:800}[m];let eur=a*0.001;let net=Math.max(0,eur-fee*0.001);let netS=m==='BTC'?(net/64250).toFixed(8)+' BTC':net.toFixed(2)+' USDT';document.getElementById('we').textContent=eur.toFixed(2)+'€';document.getElementById('wn').textContent=netS+' netto'}
+document.getElementById('wam').addEventListener('input',upd);
+function doW(){let addr=document.getElementById('wa').value.trim();let amt=parseInt(document.getElementById('wam').value||0);if(addr.length<10){toastMsg('Zadaj adresu');return}if(amt<500){toastMsg('Min 500');return}if(amt>coins){toastMsg('Málo coinov');return}let fee={TRC:1000,BEP:500,ERC:3000,BTC:800}[m];let net=amt-fee;let netS=m==='BTC'?(net*0.001/64250).toFixed(8)+' BTC':(net*0.001).toFixed(2)+' USDT';coins-=amt;wds.push({id:Date.now(),method:m,coins:amt,fee,net:netS,addr});save();toastMsg('✅ Žiadosť: '+netS+' → '+m);closeWd()}
+function exportJ(){let d=JSON.stringify({uid,code,coins,wds},null,2);let b=new Blob([d],{type:'application/json'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download='tomasearn_'+uid+'.json';a.click()}
+function calc(){let p=parseInt(document.getElementById('cr').value);document.getElementById('cp').textContent=p;let l1=p*20*50*0.5;let l2=p*2*20*50*0.25;let l3=p*2*20*50*0.1;let tot=l1+l2+l3;document.getElementById('cdy').textContent=tot+' coinov ('+(tot*0.001).toFixed(2)+'€)';document.getElementById('cmo').textContent=(tot*30*0.001).toFixed(2)+'€ / mesiac';}
+render();upd();setM('TRC');
 </script>
-</body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
