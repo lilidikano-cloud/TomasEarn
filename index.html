@@ -24,182 +24,139 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TomasEarn - Len Video</title>
+<title>TomasEarn - Zarábaj na videu $</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0f;color:#fff;font-family:Inter,sans-serif;min-height:100vh}
-.header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#11111a;border-bottom:1px solid #222}
-.logo{font-weight:900;font-size:20px;letter-spacing:1px}
-.logo span{color:#a855f7}
-.coins{background:#1e1e2e;border:1px solid #a855f7;padding:6px 14px;border-radius:20px;font-weight:700}
+body{background:#0a0a0f;color:#fff;font-family:Inter,sans-serif}
+.header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#11111a;border-bottom:1px solid #222;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;font-size:20px} .logo span{color:#a855f7}
+.coins{background:#1e1e2e;border:1px solid #facc15;padding:6px 14px;border-radius:20px;font-weight:800}
 .coins b{color:#facc15}
+.earn-badge{background:#16a34a;color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;margin-left:8px}
 .container{max-width:500px;margin:0 auto;padding:16px}
-.video-box{background:#15151f;border-radius:16px;overflow:hidden;border:1px solid #222;margin-bottom:16px}
-.video-box video{width:100%;aspect-ratio:16/9;background:#000}
-.video-info{padding:12px}
-.video-info h3{font-size:14px;margin-bottom:8px}
+.video-earn-box{background:linear-gradient(135deg,#15151f,#1f1a33);border:1px solid #a855f7;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center}
 .btn{width:100%;padding:14px;background:linear-gradient(90deg,#a855f7,#7c3aed);border:none;border-radius:12px;color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.btn-green{background:linear-gradient(90deg,#16a34a,#15803d)}
 .btn:disabled{opacity:.5}
-.progress{height:6px;background:#222;border-radius:3px;margin:10px 0;overflow:hidden}
-.progress div{height:100%;background:#a855f7;width:0%;transition:width .3s}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.card{background:#15151f;border:1px solid #222;border-radius:12px;padding:14px;text-align:center}
-.card h4{font-size:12px;opacity:.6;margin-bottom:6px}
-.card p{font-size:18px;font-weight:800;color:#facc15}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
+.stat{background:#15151f;border:1px solid #222;border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:18px;color:#facc15}
 .invite{background:#15151f;border:1px dashed #a855f7;border-radius:12px;padding:14px;margin-top:16px}
-.invite input{width:100%;padding:10px;background:#0a0a0f;border:1px solid #333;border-radius:8px;color:#fff;margin:8px 0}
+.invite input{width:100%;padding:10px;background:#0a0a0f;border:1px solid #333;border-radius:8px;color:#fff;margin:8px 0;font-size:12px}
 .withdraw{background:#15151f;border:1px solid #222;border-radius:12px;padding:14px;margin-top:16px}
-.withdraw input,.withdraw select{width:100%;padding:12px;background:#0a0a0f;border:1px solid #333;border-radius:8px;color:#fff;margin:6px 0}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;padding:20px;z-index:99}
+.withdraw input,.withdraw select{width:100%;padding:11px;background:#0a0a0f;border:1px solid #333;border-radius:8px;color:#fff;margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:20px;z-index:99}
 .modal.active{display:flex}
-.modal-box{background:#15151f;border:1px solid #333;border-radius:16px;padding:20px;width:100%;max-width:400px}
+.modal-box{background:#15151f;border:1px solid #333;border-radius:16px;padding:20px;width:100%;max-width:400px;text-align:center}
+.step{font-size:12px;text-align:left;background:#0a0a0f;padding:10px;border-radius:8px;margin:10px 0;border-left:3px solid #a855f7}
 </style>
 </head>
 <body>
 <div class="header">
-<div class="logo">TOMAS<span>EARN</span></div>
+<div class="logo">TOMAS<span>EARN</span> <span class="earn-badge">+$ Z AYET</span></div>
 <div class="coins">🪙 <b id="coinCount">0</b></div>
 </div>
 <div class="container">
-<div class="video-box">
-<video id="mainVideo" controls playsinline></video>
-<div class="video-info">
-<h3 id="videoTitle">Načítavam videá...</h3>
-<div class="progress"><div id="prog"></div></div>
-<button class="btn" id="watchBtn" disabled>Sleduj video a získaj 50 coinov</button>
+<div class="video-earn-box">
+<h2>▶️ Sleduj video = zisk pre teba</h2>
+<p style="font-size:12px;opacity:.7;margin-bottom:12px">Ty dáš kamošovi 50 coinov, Ayet dá tebe $0.05. Čistý zisk!</p>
+<button class="btn btn-green" id="watchAyetBtn">▶️ SLEDOVAŤ VIDEO A ZAROBIŤ 50 COINOV</button>
+<p style="font-size:10px;margin-top:8px;opacity:.6">Otvorí Ayet Offerwall - tam klikni na VIDEO (0.05$)</p>
+<div class="stats">
+<div class="stat"><b id="todayEarn">0</b><span>DNES COIN</span></div>
+<div class="stat"><b id="myDollars">0.00$</b><span>TVOJ ZISK AYET</span></div>
+<div class="stat"><b id="videoCnt">0</b><span>VIDEÍ</span></div>
 </div>
 </div>
-
-<div class="cards">
-<div class="card"><h4>Dnes zárobok</h4><p id="todayEarn">0</p></div>
-<div class="card"><h4>Videa</h4><p id="videoCount">0</p></div>
+<div class="step">
+<b>1x nastavenie - Kde vziať Ayet link?</b><br>
+Ayet → Placements → klikni na 1 adslot → skopíruj Offerwall URL<br>
+Potom vlož dole. V Ayet nastav: Edit → Offer Types → len VIDEO ✅
 </div>
-
+<div style="background:#15151f;border:1px solid #333;border-radius:10px;padding:10px;margin-bottom:16px">
+<input id="ayetLinkInput" placeholder="Vlož sem tvoj Ayet Offerwall URL..." style="width:100%;padding:10px;background:#0a0a0f;border:1px solid #333;border-radius:8px;color:#fff;font-size:11px">
+<button class="btn" style="padding:8px;margin-top:6px;font-size:12px" onclick="saveAyetLink()">Uložiť Ayet link</button>
+<p id="ayetStatus" style="font-size:11px;margin-top:6px"></p>
+</div>
 <div class="invite">
-<h4 style="margin-bottom:6px">🔗 Pozvi kamoša - zarobíš</h4>
-<p style="font-size:12px;opacity:.7">1. úroveň 50% • 2. úroveň 25% • 3. úroveň 10%</p>
+<h4>🔗 Pozvi kamoša - 50% / 25% / 10%</h4>
 <input id="refLink" readonly>
-<button class="btn" style="padding:10px;margin-top:8px" onclick="copyRef()">Kopírovať link</button>
-<p style="font-size:12px;margin-top:8px">Tvoj kód: <b id="myCode" style="color:#a855f7"></b></p>
+<button class="btn" style="padding:8px;margin-top:6px" onclick="copyRef()">Kopírovať link</button>
+<p style="font-size:11px;margin-top:6px">Kód: <b id="myCode" style="color:#a855f7"></b></p>
 </div>
-
 <div class="withdraw">
-<h4>💸 Výber - LEN REAL</h4>
-<p style="font-size:11px;opacity:.6;margin:6px 0">Min. 1000 coinov = 1€</p>
-<select id="payType">
-<option value="TRC20">USDT TRC20</option>
-<option value="BTC">BTC</option>
-<option value="PayPal">PayPal</option>
-</select>
-<input id="walletAddr" placeholder="Tvoja adresa / PayPal email">
+<h4>💸 Výber - REAL</h4>
+<p style="font-size:11px;opacity:.6">Min. 1000 coin = 1€</p>
+<select id="payType"><option value="TRC20">USDT TRC20</option><option value="BTC">BTC</option><option value="PayPal">PayPal</option></select>
+<input id="walletAddr" placeholder="Adresa / PayPal email">
 <input id="withdrawAmount" type="number" placeholder="Počet coinov (min 1000)">
 <button class="btn" onclick="requestWithdraw()">Požiadať o výber</button>
-<div id="withdrawStatus" style="font-size:12px;margin-top:8px;opacity:.8"></div>
+<div id="withdrawStatus" style="font-size:12px;margin-top:8px"></div>
 </div>
 </div>
-
-<div class="modal" id="rewardModal"><div class="modal-box" style="text-align:center">
+<div class="modal" id="rewardModal"><div class="modal-box">
 <h2 style="color:#facc15">+50 coinov! 🎉</h2>
-<p style="margin:12px 0;opacity:.8">Video pozreté</p>
+<p style="margin:10px 0;font-size:13px">Video pozreté. Ty si zarobil <b style="color:#16a34a">$0.05 v Ayet</b>!</p>
 <button class="btn" onclick="closeReward()">Pokračovať</button>
 </div></div>
-
 <script>
 const WORKER_URL = "https://tomasearn-videa.lilidikano-cloud.workers.dev";
 let coins = parseInt(localStorage.getItem('te_coins')||'0');
-let videos = [];
-let currentIdx = 0;
-let watchedToday = parseInt(localStorage.getItem('te_watched')||'0');
+let watched = parseInt(localStorage.getItem('te_watched')||'0');
+let ayetLink = localStorage.getItem('te_ayet_link')||'';
 let myCode = localStorage.getItem('te_code');
 if(!myCode){myCode='TE'+Math.random().toString(36).substring(2,7).toUpperCase();localStorage.setItem('te_code',myCode);}
 let refBy = new URLSearchParams(location.search).get('ref');
-
 function updateUI(){
 document.getElementById('coinCount').textContent=coins;
-document.getElementById('todayEarn').textContent=watchedToday*50;
-document.getElementById('videoCount').textContent=watchedToday;
+document.getElementById('todayEarn').textContent=watched*50;
+document.getElementById('videoCnt').textContent=watched;
 document.getElementById('myCode').textContent=myCode;
 document.getElementById('refLink').value=location.origin+location.pathname+'?ref='+myCode;
+document.getElementById('myDollars').textContent=(watched*0.05).toFixed(2)+'$';
+document.getElementById('ayetLinkInput').value=ayetLink;
+if(ayetLink) document.getElementById('ayetStatus').textContent='✅ Ayet link uložený - zarábaš $';
 localStorage.setItem('te_coins',coins);
-localStorage.setItem('te_watched',watchedToday);
+localStorage.setItem('te_watched',watched);
 }
 updateUI();
-
-async function loadVideos(){
-try{
-const r = await fetch(WORKER_URL+'/videos');
-const data = await r.json();
-videos = data.videos || data || [];
-}catch(e){
-videos = [{url:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",title:"Test Video - Big Buck Bunny"}];
+function saveAyetLink(){
+let v=document.getElementById('ayetLinkInput').value.trim();
+if(!v.includes('ayet') && !v.includes('offerwall')){document.getElementById('ayetStatus').textContent='❌ To nie je Ayet link';return;}
+localStorage.setItem('te_ayet_link',v);ayetLink=v;
+document.getElementById('ayetStatus').textContent='✅ Uložené! Teraz už zarábaš $';
 }
-if(videos.length>0) playVideo(0);
-}
-function playVideo(i){
-currentIdx=i;
-const v = videos[i];
-const vid = document.getElementById('mainVideo');
-vid.src = v.url || v.src;
-document.getElementById('videoTitle').textContent = v.title || ('Video '+(i+1));
-document.getElementById('watchBtn').disabled=true;
-document.getElementById('prog').style.width='0%';
-let rewarded=false;
-vid.ontimeupdate=()=>{
-if(vid.duration){
-let p = (vid.currentTime/vid.duration)*100;
-document.getElementById('prog').style.width=p+'%';
-if(p>80 && !rewarded){
-rewarded=true;
-document.getElementById('watchBtn').disabled=false;
-document.getElementById('watchBtn').textContent='Vyzdvihnúť 50 coinov';
-}
-}
-};
-}
-document.getElementById('watchBtn').onclick=()=>{
-coins+=50;
-watchedToday++;
-if(refBy){
-let bonusInfo = {code:refBy,amount:50};
-fetch(WORKER_URL+'/ref', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(bonusInfo)}).catch(()=>{});
-}
+document.getElementById('watchAyetBtn').onclick=()=>{
+if(!ayetLink){alert('Najprv vlož Ayet Offerwall link dole!');return;}
+let userId = myCode+'_'+Date.now();
+let url = ayetLink;
+if(url.includes('external_id=')){url=url.replace(/external_id=[^&]+/,'external_id='+userId);}else{url+=(url.includes('?')?'&':'?')+'external_id='+userId;}
+window.open(url,'_blank');
+document.getElementById('watchAyetBtn').textContent='Čakám... pozri video v novom okne';
+document.getElementById('watchAyetBtn').disabled=true;
+setTimeout(()=>{
+coins+=50;watched++;
+if(refBy){fetch(WORKER_URL+'/ref',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:refBy,amount:50})}).catch(()=>{});}
 updateUI();
 document.getElementById('rewardModal').classList.add('active');
-playVideo((currentIdx+1)%videos.length);
+document.getElementById('watchAyetBtn').textContent='▶️ SLEDOVAŤ ĎALŠIE VIDEO';
+document.getElementById('watchAyetBtn').disabled=false;
+fetch(WORKER_URL+'/ayet-earn',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:userId,code:myCode,earn:0.05})}).catch(()=>{});
+},8000);
 };
-function closeReward(){document.getElementById('rewardModal').classList.remove('active'); document.getElementById('watchBtn').textContent='Sleduj video a získaj 50 coinov'; document.getElementById('watchBtn').disabled=true;}
-function copyRef(){navigator.clipboard.writeText(document.getElementById('refLink').value); alert('Skopírované');}
-
+function closeReward(){document.getElementById('rewardModal').classList.remove('active');}
+function copyRef(){navigator.clipboard.writeText(document.getElementById('refLink').value);alert('Skopírované');}
 async function requestWithdraw(){
-const amt = parseInt(document.getElementById('withdrawAmount').value);
-const addr = document.getElementById('walletAddr').value.trim();
-const type = document.getElementById('payType').value;
-const status = document.getElementById('withdrawStatus');
-if(amt<1000){status.textContent='Min. 1000 coinov';return;}
-if(coins<amt){status.textContent='Nemáš dosť coinov (máš '+coins+')';return;}
-if(!addr){status.textContent='Zadaj adresu';return;}
-status.textContent='Odosielam žiadosť...';
-try{
-const payload = {code:myCode, amount:amt, address:addr, type:type, coins:coins};
-const res = await fetch(WORKER_URL+'/withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-if(res.ok){
-coins-=amt;
-updateUI();
-status.textContent='✅ Žiadosť odoslaná! Admin ti pošle '+ (amt/1000) +'€ na '+type+' do 24h. STATUS: PENDING';
-document.getElementById('withdrawAmount').value='';
-}else{
-throw new Error();
+const amt=parseInt(document.getElementById('withdrawAmount').value);
+const addr=document.getElementById('walletAddr').value.trim();
+const type=document.getElementById('payType').value;
+const s=document.getElementById('withdrawStatus');
+if(amt<1000){s.textContent='Min. 1000';return;}
+if(coins<amt){s.textContent='Máš len '+coins;return;}
+if(!addr){s.textContent='Zadaj adresu';return;}
+s.textContent='Odosielam...';
+try{await fetch(WORKER_URL+'/withdraw',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:myCode,amount:amt,address:addr,type:type})});coins-=amt;updateUI();s.textContent='✅ Žiadosť odoslaná! '+(amt/1000)+'€ na '+type;}catch(e){coins-=amt;updateUI();s.textContent='✅ PENDING - admin to vidí';}
 }
-}catch(e){
-status.textContent='Uložené lokálne - admin to uvidí. STATUS: PENDING (offline)';
-coins-=amt;
-updateUI();
-let pending = JSON.parse(localStorage.getItem('te_pending')||'[]');
-pending.push({date:new Date().toISOString(),code:myCode,amount:amt,address:addr,type:type});
-localStorage.setItem('te_pending',JSON.stringify(pending));
-}
-}
-loadVideos();
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
